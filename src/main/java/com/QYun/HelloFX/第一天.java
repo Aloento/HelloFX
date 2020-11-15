@@ -37,7 +37,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class App extends Application {
+public class 第一天 extends Application {
 
     @Override
     public void start(Stage stage) {
@@ -176,6 +176,13 @@ public class App extends Application {
             }
         });
         
+        l.setOnMouseClicked(new EventHandler<MouseEvent>() { // 为没有OnActiond的组件设置动作
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("你好");
+            }
+        });
+
         stage.show();
         Note.show();
         // stage.close();
@@ -190,3 +197,4 @@ public class App extends Application {
     }
 
 }
+//Written by Aloento.
