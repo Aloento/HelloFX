@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,7 +17,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+// import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+// import javafx.scene.layout.StackPane;
 // import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -32,8 +37,10 @@ public class 第二天 extends Application {
         primaryStage.setWidth(800);
         // 绑定场景
         Group Group_one = new Group(); // 新建组，组属于低级的容器，不太算布局，只相当于辅助线的功能
-        Scene Scene_one = new Scene(Group_one); // 新建场景并绑定布局
-        primaryStage.setScene(Scene_one); // 绑定场景
+        BorderPane borderPane = new BorderPane(); // 新建边框窗格，有上下左右中五个范围
+        borderPane.setStyle("-fx-background-color:#607D8B"); // 设置颜色
+        borderPane.setCenter(Group_one); // 将组设置为布局中间的组件
+        primaryStage.setScene(new Scene(borderPane)); // 新建场景并绑定布局
 
         Stage stage_Note = new Stage(); // 新建一个子窗口
         stage_Note.setTitle("Q-Audio"); // 元数据设置
@@ -99,6 +106,17 @@ public class 第二天 extends Application {
         anchorPane_2.setStyle("-fx-background-color:green;"); // 设置2的背景
         anchorPane_one.getChildren().add(anchorPane_2); // 设置2为1的子类
 
+        FlowPane flowPane = new FlowPane(); // 流式布局，与H/VBox不同的是。它会自适应排列
+        flowPane.setHgap(10); // 设置水平间距
+        flowPane.setVgap(10); // 设置垂直间距
+        flowPane.setOrientation(Orientation.HORIZONTAL); // 设置默认排列方向
+        flowPane.getChildren().addAll(button_2);
+
+        // GridPane gridPane = new GridPane(); // 网格布局
+        // gridPane.add(child, columnIndex, rowIndex); // 添加子组件
+
+        // StackPane stackPane = new StackPane(); // 图层布局，一层层的排列，用.getChildren
+
         primaryStage.show(); //显示窗口
         stage_Note.show();
 
@@ -115,9 +133,9 @@ public class 第二天 extends Application {
             }
         }); // 简易方法，更高级的方法是绑定
 
-        anchorPane_2.getChildren().add(button_2); // 让B2是A2的子类
-        AnchorPane.setRightAnchor(button_2, 0.0); // 让B2始终在A2的右下角
-        AnchorPane.setBottomAnchor(button_2, 0.0);
+        anchorPane_2.getChildren().addAll(flowPane); // 让B2是A2的子类
+        AnchorPane.setRightAnchor(flowPane, 0.0); // 让B2始终在A2的右下角
+        AnchorPane.setBottomAnchor(flowPane, 0.0);
         
         // button_2.setManaged(false); // 让B2脱离管理，不在原来的位置上了
         // button_2.setVisible(true); // 让B2不可见，还在原来的位置上
@@ -126,7 +144,7 @@ public class 第二天 extends Application {
         HBox hBox_1 = new HBox(); // 布局，水平排列
         // VBox vBox_1 = new VBox(); // 布局。纵向排列
         hBox_1.setPrefSize(500, 500); // 设置布局的大小
-        hBox_1.setStyle("-fx-background-color:red;"); // 给布局一个颜色
+        hBox_1.setStyle("-fx-background-color:#795548;"); // 给布局一个颜色
         hBox_1.setPadding(new Insets(10)); // 设置内边距
         hBox_1.setSpacing(10); // 设置子组件之间的间距
         HBox.setMargin(textField_one, new Insets(10)); // 设置某个子组件的3外边距
@@ -134,7 +152,31 @@ public class 第二天 extends Application {
         hBox_1.getChildren().addAll(textField_one, passwordField_one); // 让文本框属于布局
         Group_one.getChildren().add(hBox_1); // 让布局属于组
 
-        
+        // 批量建立AnchorPane给BorderPane使用
+        AnchorPane anchorPane_Top = new AnchorPane();
+        AnchorPane anchorPane_Down = new AnchorPane();
+        AnchorPane anchorPane_L = new AnchorPane();
+        AnchorPane anchorPane_R = new AnchorPane();
+        // 设置AP的大小
+        anchorPane_Top.setPrefSize(100, 100);
+        anchorPane_Down.setPrefSize(100, 100);
+        anchorPane_L.setPrefSize(100, 100);
+        anchorPane_R.setPrefSize(100, 100);
+        anchorPane_Top.setStyle("-fx-background-color:#7C4DFF");
+        anchorPane_Down.setStyle("-fx-background-color:#757575");
+        anchorPane_L.setStyle("-fx-background-color:#009688");
+        anchorPane_R.setStyle("-fx-background-color:#448AFF");
+
+        // 设置他们为布局的上下左右部件，不能用.getChildren
+        borderPane.setTop(anchorPane_Top);
+        borderPane.setBottom(anchorPane_Down);
+        borderPane.setLeft(anchorPane_L);
+        borderPane.setRight(anchorPane_R);
+
+        // borderPane.setPadding(new Insets(10)); // 设置BP内边距
+        // borderPane.setMargin(child, new Insets(10)); // 设置组件外边距
+        // borderPane.setAlignment(child, Pos.CENTER); // 设置对齐方式
+        // borderPane.getTop(); // 获得在Top的组件
 
     }
 

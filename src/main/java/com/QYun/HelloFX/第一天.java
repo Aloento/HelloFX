@@ -62,7 +62,7 @@ public class 第一天 extends Application {
         l.setFont(Font.font(30)); //改变字体
         l.setTextFill(Paint.valueOf("#6200EA")); //为文字设置颜色
         // Scene scene = new Scene(new StackPane(l), 640, 480);
-        stage.setScene(new Scene(new StackPane(l), 640, 480)); // 设置画布
+        stage.setScene(new Scene(new StackPane(l), 640, 480)); // 设置画布，图层布局
 
         // stage.setResizable(false);
         // stage.setFullScreen(true); //自动全屏
