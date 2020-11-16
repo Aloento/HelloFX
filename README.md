@@ -14,5 +14,4 @@
 即可正常启动程序
 
 ## IDE
-我使用Visual Studio Code  
-并且使用F5直接调试单个程序
+我使用Visual Studio Code和Intellij  
