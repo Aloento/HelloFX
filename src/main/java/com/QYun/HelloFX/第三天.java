@@ -6,13 +6,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 //import javafx.scene.layout.TilePane;
 import javafx.scene.text.*;
@@ -80,11 +85,30 @@ public class 第三天 extends Application {
             }
         });
 
+        // 菜单
+        Menu menu1 = new Menu("菜单1");
+        Menu menu2 = new Menu("菜单2", new Button("按钮"));
+        Menu menu3 = new Menu("菜单3");
+        // 菜单选项
+        MenuItem menuItem1 = new MenuItem("选项1");
+        MenuItem menuItem2 = new MenuItem("选项2");
+        MenuItem menuItem3 = new MenuItem("选项3", new ImageView("Ubuntu.png"));
+        // 将选项加入到菜单中
+        menu1.getItems().add(menuItem1);
+        menu2.getItems().add(menuItem2);
+        menu3.getItems().add(menuItem3);
+        // 菜单栏
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(menu1, menu2, menu3);
+        // 给选项设置快捷键的好方法，会自动在选项后显示快捷键
+        menuItem1.setAccelerator(KeyCombination.valueOf("ctrl+b"));
+
         // 创建绝对布局，并赋予文本流
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(textFlow, B1);
+        anchorPane.getChildren().addAll(textFlow, B1, menuBar);
         AnchorPane.setTopAnchor(textFlow, 50.0); // 设置边距
         AnchorPane.setLeftAnchor(textFlow, 50.0);
+        AnchorPane.setTopAnchor(B1, 100.0);
 
         // TilePane磁贴布局的特性就是每一个组件的大小都一样
         // TilePane tilePane = new TilePane(); // 和Grid与FlowPane差不多
@@ -96,14 +120,29 @@ public class 第三天 extends Application {
         primaryStage.setWidth(400);
         primaryStage.setHeight(400);
         primaryStage.show();
-
+        
+        menuBar.setPrefWidth(anchorPane.getWidth()); // 设置菜单栏宽度
         anchorPane.widthProperty().addListener(new ChangeListener<Number>() {
             @Override // 让文本流的宽度随着布局变化而变化
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 textFlow.setPrefWidth(newValue.doubleValue() - AnchorPane.getLeftAnchor(textFlow));
+                menuBar.setPrefWidth(newValue.doubleValue()); // 动态变化菜单栏宽度
             } // 减去一个内边距
         });
 
+        menu1.setOnShowing(new EventHandler<Event>(){
+            @Override // 展开菜单就显示，相反的是.setOnHidden
+            public void handle(Event event) {
+                System.out.println("显示菜单");
+            }
+        });
+
+        menuItem1.setOnAction(new EventHandler<ActionEvent>(){
+            @Override // 点击选项1的动作
+            public void handle(ActionEvent event) {
+                System.out.println("点击选项");
+            }
+        });
 
     }
 
