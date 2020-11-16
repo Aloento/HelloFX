@@ -3,11 +3,19 @@ package com.QYun.HelloFX;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 //import javafx.scene.layout.TilePane;
 import javafx.scene.text.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class 第三天 extends Application {
 
@@ -27,9 +35,40 @@ public class 第三天 extends Application {
         textFlow.setStyle("-fx-background-color: #b3b3b3");
         textFlow.setTextAlignment(TextAlignment.CENTER); // 对齐方式
         textFlow.getChildren().addAll(T1, T2, T3);
+        // 设置一个按钮与对话框布局
+        Button B1 = new Button("弹窗");
+        B1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override // 按钮按下弹出对话框
+            public void handle(ActionEvent event) {
+                DialogPane dialogPane = new DialogPane(); // 对话框布局
+                dialogPane.setHeaderText("弹窗标题");
+                dialogPane.setContentText("这是弹窗");
+                dialogPane.getButtonTypes().add(ButtonType.CLOSE); // 创建一个按钮，有应用关闭上一步等按钮
+                dialogPane.setGraphic(new ImageView("Ubuntu.png")); // 设置一个图片
+
+                Scene scene = new Scene(dialogPane);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("弹窗");
+                stage.initOwner(primaryStage);
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initStyle(StageStyle.UTILITY);
+                stage.show();
+                // 将对话框内置的按钮转换为一个实体按钮（返回一个Node）
+                Button Close = (Button) dialogPane.lookupButton(ButtonType.CLOSE);
+                Close.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override // 设置按钮动作：关闭对话框
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+                });
+
+            }
+        });
+
         // 创建绝对布局，并赋予文本流
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(textFlow);
+        anchorPane.getChildren().addAll(textFlow, B1);
         AnchorPane.setTopAnchor(textFlow, 50.0); // 设置边距
         AnchorPane.setLeftAnchor(textFlow, 50.0);
 
