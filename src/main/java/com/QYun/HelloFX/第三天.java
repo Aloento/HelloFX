@@ -3,6 +3,8 @@ package com.QYun.HelloFX;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -16,6 +18,7 @@ import javafx.scene.text.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class 第三天 extends Application {
 
@@ -64,6 +67,11 @@ public class 第三天 extends Application {
                     }
                 });
 
+                scheduledService Counter = new scheduledService(dialogPane, stage); // 实体化多线程
+                Counter.setDelay(Duration.seconds(1)); // 给多任务一个启动条件，0秒后开始运行
+                Counter.setPeriod(Duration.millis(1000)); // 设置间隔1秒运行
+                Counter.start(); // 启动计划任务
+
             }
         });
 
@@ -98,4 +106,39 @@ public class 第三天 extends Application {
     }
 
 }
+
+// 定义一个抽象类，多任务，效果是在弹出窗口倒计时
+class scheduledService extends ScheduledService<Integer> {
+    int i = 10;
+    private DialogPane dialogPane = null;
+    private Stage stage = null;
+
+    public scheduledService (DialogPane dialogPane, Stage stage){
+        this.dialogPane = dialogPane;
+        this.stage = stage;
+    }
+
+    @Override // 需要有一个<泛型>
+    protected Task<Integer> createTask() {
+        return new Task<Integer>()
+        {
+            @Override // call不是FX的线程，所以不能更新UI，这里面可以做一些其他的事情
+            protected Integer call() throws Exception {
+                return i--; // 这里返回的指会给到下面
+            }
+
+            @Override // 所以我们需要其他方法完成，它是一个FX线程，用来更新UI
+            protected void updateValue(Integer value) {
+                if (i > 0)
+                    dialogPane.setContentText(String.valueOf(value) + "秒后关闭");
+                else
+                {
+                    scheduledService.this.stage.close(); // 也可以直接stage.close
+                    scheduledService.this.cancel(); // 关闭任务，需要使用.this方法
+                }
+            }
+        };
+    }
+}
+
 //Written by Aloento.
