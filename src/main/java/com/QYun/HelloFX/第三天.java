@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+//import javafx.scene.layout.TilePane;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
@@ -24,13 +25,17 @@ public class 第三天 extends Application {
         // 创建文本流
         TextFlow textFlow = new TextFlow();
         textFlow.setStyle("-fx-background-color: #b3b3b3");
-//        textFlow.setTextAlignment(TextAlignment.RIGHT); // 对齐方式
+        textFlow.setTextAlignment(TextAlignment.CENTER); // 对齐方式
         textFlow.getChildren().addAll(T1, T2, T3);
         // 创建绝对布局，并赋予文本流
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().addAll(textFlow);
         AnchorPane.setTopAnchor(textFlow, 50.0); // 设置边距
         AnchorPane.setLeftAnchor(textFlow, 50.0);
+
+        // TilePane磁贴布局的特性就是每一个组件的大小都一样
+        // TilePane tilePane = new TilePane(); // 和Grid与FlowPane差不多
+
         // 设置场景
         Scene scene = new Scene(anchorPane); // 绑定绝对布局到场景
         primaryStage.setScene(scene);
