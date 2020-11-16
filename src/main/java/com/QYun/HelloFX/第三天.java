@@ -45,6 +45,7 @@ public class 第三天 extends Application {
                 dialogPane.setContentText("这是弹窗");
                 dialogPane.getButtonTypes().add(ButtonType.CLOSE); // 创建一个按钮，有应用关闭上一步等按钮
                 dialogPane.setGraphic(new ImageView("Ubuntu.png")); // 设置一个图片
+                dialogPane.setExpandableContent(new Text("扩展内容")); // 显示详细内容的选项
 
                 Scene scene = new Scene(dialogPane);
                 Stage stage = new Stage();
