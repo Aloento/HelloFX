@@ -1,14 +1,17 @@
 package com.QYun.HelloFX;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 public class 登录小窗口 extends Application {
 
@@ -21,11 +24,13 @@ public class 登录小窗口 extends Application {
         label_A.setStyle("-fx-font-size: 14; -fx-text-fill: white;");
         label_P.setStyle("-fx-font-size: 14; -fx-text-fill: white;");
 
-        TextField textField_A = new TextField();
+        TextField textField_A = new TextField("输入账号与密码");
         PasswordField passwordField_P = new PasswordField();
 
         textField_A.setUserData("QA");
+        textField_A.setTooltip(new Tooltip("请输入用户名"));
         passwordField_P.setUserData("Q-Audio");
+        passwordField_P.setTooltip(new Tooltip("请输入密码"));
 
         Button button_Login = new Button("登录");
         Button button_clear = new Button("清除");
@@ -65,7 +70,11 @@ public class 登录小窗口 extends Application {
             }
             else
             {
-                System.out.println("失败");
+                primaryStage.setTitle("账号或密码错误");
+                FadeTransition fadeTrans = new FadeTransition(Duration.millis(500), gridPane);
+                fadeTrans.setFromValue(0);
+                fadeTrans.setToValue(1);
+                fadeTrans.play();
             }
         });
 
@@ -83,6 +92,7 @@ class Win_Success
     {
         DialogPane dialogPane = new DialogPane();
         dialogPane.setContentText("登录成功");
+        dialogPane.setGraphic(new ImageView("Ubuntu.png"));
         dialogPane.setExpandableContent(new Text("账号：" + A + "      密码：" + P));
         dialogPane.getButtonTypes().add(ButtonType.OK);
 
