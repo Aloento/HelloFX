@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 //import javafx.scene.layout.TilePane;
@@ -33,11 +34,15 @@ public class 第三天 extends Application {
         T2.setStyle("-fx-fill: #ff3c3c");
         T3.setFont(Font.font("Helvetica", FontPosture.ITALIC, 20)); // 设置字体与斜体
         T3.setStyle("-fx-font-weight: BOLD"); // 加粗
+        // 超链接样式的文本，用.setOnAction处理，它上面的Button也有同样效果
+        Hyperlink QA = new Hyperlink("官网", new Button("打开"));
+
         // 创建文本流
         TextFlow textFlow = new TextFlow();
         textFlow.setStyle("-fx-background-color: #b3b3b3");
         textFlow.setTextAlignment(TextAlignment.CENTER); // 对齐方式
-        textFlow.getChildren().addAll(T1, T2, T3);
+        textFlow.getChildren().addAll(T1, T2, T3, QA);
+
         // 设置一个按钮与对话框布局
         Button B1 = new Button("弹窗");
         B1.setOnAction(new EventHandler<ActionEvent>() {
@@ -98,6 +103,7 @@ public class 第三天 extends Application {
                 textFlow.setPrefWidth(newValue.doubleValue() - AnchorPane.getLeftAnchor(textFlow));
             } // 减去一个内边距
         });
+
 
     }
 
