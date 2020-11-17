@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="HelloFX" target="14" />
+      <module name="HelloFX" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>
