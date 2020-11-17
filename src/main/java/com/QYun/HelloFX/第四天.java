@@ -2,6 +2,7 @@ package com.QYun.HelloFX;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
@@ -14,6 +15,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
@@ -74,7 +76,7 @@ public class 第四天 extends Application {
         menuBar.getMenus().addAll(menu1, menu2, menu3, menu5); // 把菜单给菜单栏
         
         MenuButton mButton = new MenuButton("下拉菜单按钮"); // 创建一个下拉菜单
-        mButton.getItems().addAll(menu4); // 设置组件
+        mButton.getItems().addAll(new MenuItem("选项")); // 设置组件
         AnchorPane.setTopAnchor(mButton, 50.0); // 设置间距
 
         SplitMenuButton sButton = new SplitMenuButton(); // 这玩意可以点击
@@ -88,8 +90,17 @@ public class 第四天 extends Application {
         button_R.setContextMenu(cMenu); // 绑定右键菜单
         AnchorPane.setTopAnchor(button_R, 150.0);
 
+        TitledPane tPane = new TitledPane("可展开的按钮", new Button("选项")); // 里面可以放布局
+        TitledPane tPane2 = new TitledPane("列表", new Button("选项2"));
+        TitledPane tPane3 = new TitledPane("列表2", new Button("选项3"));
+        AnchorPane.setTopAnchor(tPane, 200.0); // 可展开的列表
+
+        Accordion accordion = new Accordion(); // 手风琴折叠式，只能张开一个
+        accordion.getPanes().addAll(tPane2, tPane3); // 获得组件
+        AnchorPane.setTopAnchor(accordion, 300.0);
+
         // 设置窗口
-        aPane.getChildren().addAll(menuBar, mButton, sButton, button_R);
+        aPane.getChildren().addAll(menuBar, mButton, sButton, button_R, tPane, accordion);
         Scene scene = new Scene(aPane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("第四天");
