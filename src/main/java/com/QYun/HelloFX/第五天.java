@@ -77,10 +77,10 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         // 下面做一个类似于按选择的省份显示城市列表功能
 //      SimpleListProperty<String> eg = new SimpleListProperty<>(); // 也可以用这个方法
         ObservableList<String> list_T = FXCollections.observableArrayList(); // 创建一个可观察列表
-        list_T.addAll("数字", "字母");
+        list_T.addAll("数字", "字母"); // 设置选项
         ChoiceBox<String> choice_L = new ChoiceBox<>();
-        choice_L.setItems(list_T);
-
+        choice_L.setItems(list_T); // 绑定列表
+        // 设置下属列表
         ObservableList<String> list_RI = FXCollections.observableArrayList();
         list_RI.addAll("1", "2", "3");
         ObservableList<String> list_RA = FXCollections.observableArrayList();
@@ -128,12 +128,14 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
 
         choice_L.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             switch (newValue) { // 随着左边的改变，右边的列表随之改变
-                case "数字":
+                case "数字": // 给一个倒序
+                    FXCollections.reverse(list_RI); // 倒序排序
                     choice_R.setItems(list_RI);
                     break;
 
                 case "字母":
                     choice_R.setItems(list_RA);
+                    choice_R.show(); // 自动展示
                     break;
 
                 default:
