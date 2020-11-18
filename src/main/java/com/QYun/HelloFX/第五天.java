@@ -36,10 +36,11 @@ public class 第五天 extends Application {
         primaryStage.setWidth(500);
         primaryStage.setHeight(500);
         primaryStage.show();
+        tArea.requestFocus(); // 请求默认选中
 
-        tArea.textProperty().addListener((observable, oldValue, newValue) -> {
+        tArea.textProperty().addListener((observable, oldValue, newValue) -> { // 当用户输入的时候
         // 这个方法可以拿来做文字替换，用户输入你妈自动换成我妈（3DM）
-            tArea.setTextFormatter(new TextFormatter<String>(new StringConverter<>() {
+            tArea.setTextFormatter(new TextFormatter<>(new StringConverter<String>() { // 修改文本
                 @Override
                 public String toString(String object) { // 输出
                     return object;
@@ -52,7 +53,7 @@ public class 第五天 extends Application {
                     return string;
                 }
             }));
-
+            // 需要提交一下用户输入
             tArea.commitValue();
         });
 
