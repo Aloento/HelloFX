@@ -50,13 +50,25 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         AnchorPane.setTopAnchor(cBox, 300.0);
 
         // 重要内容，创建“学生”，在Student中改写toString方法
-        Student p1 = new Student("张三", 16);
-        Student p2 = new Student("李四", 10);
-        Student p3 = new Student("王老五", 20);
+        Student p1 = new Student("张三", 16, 50);
+        Student p2 = new Student("李四", 10, 60);
+        Student p3 = new Student("王老五", 20, 70);
         // 创建学生的下拉列表，可以通过重写toString方法解决
-        ChoiceBox<String> scBox = new ChoiceBox<>(); // 泛型是Student.toString
-        scBox.getItems().addAll(p1.toString(), p2.toString(), p3.toString());
+        ChoiceBox<Student> scBox = new ChoiceBox<>(); // 泛型是Student.toString
+        scBox.getItems().addAll(p1, p2, p3); // 自动调用重写的toString
 
+        // 下面的方法object始终为null，暂时无解
+//        scBox.setConverter(new StringConverter<Student>() {
+//            @Override
+//            public String toString(Student object) {
+//                return object.getName();
+//            }
+//
+//            @Override // 无效输入
+//            public Student fromString(String string) {
+//                return null;
+//            }
+//        });
 
         AnchorPane.setLeftAnchor(scBox, 200.0);
 
@@ -90,10 +102,9 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         b1.setOnAction(this);
         b2.setOnAction(this);
         b3.setOnAction(this);
-
-        cBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
-        }); // 设置选中动作
+        // 设置选中动作
+        cBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
+        scBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue.getScore())); // 选中输出分数
 
     }
 
@@ -122,11 +133,14 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
     static class Student { // 定义类
     private String name;
     private int age;
+    private double score;
 
-    public Student(String name, int age) { // 构造函数
+    public Student(String name, int age, double score) { // 构造函数
         this.name = name;
         this.age = age;
+        this.score = score;
     }
+
     // 自动创建Getter和Setter
     public String getName() {
         return name;
@@ -144,7 +158,15 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         this.age = age;
     }
 
-    @Override // 重写toString
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    @Override // 重写toString，重点
     public String toString() {
         return name + "：" + age + "岁";
     }
