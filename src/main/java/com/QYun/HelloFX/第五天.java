@@ -1,12 +1,15 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -56,6 +59,7 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         // 创建学生的下拉列表，可以通过重写toString方法解决
         ChoiceBox<Student> scBox = new ChoiceBox<>(); // 泛型是Student.toString
         scBox.getItems().addAll(p1, p2, p3); // 自动调用重写的toString
+        AnchorPane.setLeftAnchor(scBox, 200.0);
 
         // 下面的方法object始终为null，暂时无解
 //        scBox.setConverter(new StringConverter<Student>() {
@@ -70,9 +74,25 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
 //            }
 //        });
 
-        AnchorPane.setLeftAnchor(scBox, 200.0);
+        // 下面做一个类似于按选择的省份显示城市列表功能
+//      SimpleListProperty<String> eg = new SimpleListProperty<>(); // 也可以用这个方法
+        ObservableList<String> list_T = FXCollections.observableArrayList(); // 创建一个可观察列表
+        list_T.addAll("数字", "字母");
+        ChoiceBox<String> choice_L = new ChoiceBox<>();
+        choice_L.setItems(list_T);
 
-        anchorPane.getChildren().addAll(tField, tArea, bar, cBox, scBox);
+        ObservableList<String> list_RI = FXCollections.observableArrayList();
+        list_RI.addAll("1", "2", "3");
+        ObservableList<String> list_RA = FXCollections.observableArrayList();
+        list_RA.addAll("A", "B", "C");
+        ChoiceBox<String> choice_R = new ChoiceBox<>();
+
+        HBox choiceBox = new HBox();
+        choiceBox.getChildren().addAll(choice_L, choice_R);
+        AnchorPane.setTopAnchor(choiceBox, 300.0);
+        AnchorPane.setLeftAnchor(choiceBox, 100.0);
+
+        anchorPane.getChildren().addAll(tField, tArea, bar, cBox, scBox, choiceBox);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第五天");
         primaryStage.setWidth(500);
@@ -105,6 +125,21 @@ public class 第五天 extends Application implements EventHandler<ActionEvent> 
         // 设置选中动作
         cBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue));
         scBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue.getScore())); // 选中输出分数
+
+        choice_L.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            switch (newValue) { // 随着左边的改变，右边的列表随之改变
+                case "数字":
+                    choice_R.setItems(list_RI);
+                    break;
+
+                case "字母":
+                    choice_R.setItems(list_RA);
+                    break;
+
+                default:
+                    break;
+            }
+        });
 
     }
 
