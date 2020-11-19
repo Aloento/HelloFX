@@ -4,12 +4,17 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class 第六天 extends Application { // 设置全局方法
 
@@ -31,7 +36,38 @@ public class 第六天 extends Application { // 设置全局方法
         scBox.getItems().addAll(p1, p2, p3); // 自动调用重写的toString
         AnchorPane.setTopAnchor(scBox, 50.0);
 
-        anchorPane.getChildren().addAll(tField, button_C, scBox);
+        // 这玩意和ChoicesBox几乎一样，区别就在于它可以允许用户编辑
+        ComboBox<Student> cbBox = new ComboBox<>();
+        cbBox.getItems().addAll(p1, p2, p3);
+        cbBox.setPromptText("请输入"); // 设置提示
+        cbBox.setPlaceholder(new Text("无结果")); // 当列表内容为空的时候显示的
+        cbBox.setEditable(true); // 区别，允许编辑
+        AnchorPane.setTopAnchor(cbBox, 100.0);
+
+        cbBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Student object) {
+                if (object == null)
+                    return null; // 解决报错
+                String value = object.getName() + "：" + object.getAge();
+
+                if (!cbBox.getItems().contains(object))
+                    cbBox.getItems().add(object);
+
+                return value;
+            }
+
+            @Override
+            public Student fromString(String string) { // 回车后数据由这里传入
+
+                if (string.equals(""))
+                    return null;
+
+                return new Student(string, 10, 100);
+            }
+        });
+
+        anchorPane.getChildren().addAll(tField, button_C, scBox, cbBox);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第五天");
         primaryStage.setWidth(500);
@@ -50,6 +86,25 @@ public class 第六天 extends Application { // 设置全局方法
         }); // 选中输出分数，并且执行修改
 
         button_C.setOnAction(event -> lambda.tmpStudent.setName(tField.getText()));
+
+        ObservableList<Student> allStudents = cbBox.getItems(); // 提取原列表
+        cbBox.editorProperty().get().textProperty().addListener((observable, oldValue, newValue) -> { // 做一个查找功能
+            if (newValue == null)
+                return; // 处理输入为空
+
+            FilteredList<Student> find = allStudents.filtered(student -> { // 新的找到的列表
+                return student.getName().contains(newValue); // 返回找到的列表
+            });
+
+            if (find.isEmpty())
+                cbBox.setItems(null);
+            else {
+                cbBox.setItems(find);
+                cbBox.hide(); // 刷新列表
+                cbBox.show();
+            }
+        });
+
     }
 
     public static void main(String[] args) {
