@@ -36,7 +36,7 @@ public class 第六天 extends Application { // 设置全局方法
         scBox.getItems().addAll(p1, p2, p3); // 自动调用重写的toString
         AnchorPane.setTopAnchor(scBox, 50.0);
 
-        // 这玩意和ChoicesBox几乎一样，区别就在于它可以允许用户编辑
+        // 这玩意和ChoicesBox几乎一样，区别就在于它可以允许用户编辑，还可以自定义单元格样式
         ComboBox<Student> cbBox = new ComboBox<>();
         cbBox.getItems().addAll(p1, p2, p3);
         cbBox.setPromptText("请输入"); // 设置提示
@@ -44,7 +44,7 @@ public class 第六天 extends Application { // 设置全局方法
         cbBox.setEditable(true); // 区别，允许编辑
         AnchorPane.setTopAnchor(cbBox, 100.0);
 
-        cbBox.setConverter(new StringConverter<>() {
+        cbBox.setConverter(new StringConverter<>() { // 按回车以后数据就进这里
             @Override
             public String toString(Student object) {
                 if (object == null)
