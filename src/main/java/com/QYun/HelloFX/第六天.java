@@ -1,6 +1,9 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -35,53 +38,67 @@ public class 第六天 extends Application { // 设置全局方法
         primaryStage.setHeight(500);
         primaryStage.show();
 
-        scBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue.getScore())); // 选中输出分数
+        var lambda = new Object() {Student tmpStudent;}; // 匿名对象变量
+        scBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println(newValue.getScore());
+            lambda.tmpStudent = newValue;
+            lambda.tmpStudent.getNameProperty().addListener((observable1, oldValue1, newValue1) -> { // 删除再加载
+                int i = scBox.getItems().indexOf(lambda.tmpStudent);
+                scBox.getItems().remove(lambda.tmpStudent);
+                scBox.getItems().add(i, lambda.tmpStudent);
+            }); // 更新列表但是UI不刷新
+        }); // 选中输出分数，并且执行修改
 
+        button_C.setOnAction(event -> lambda.tmpStudent.setName(tField.getText()));
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    static class Student { // 定义类
-        private String name;
-        private int age;
-        private double score;
+    static class Student { // 定义类，采用可变列表，难点
+        private SimpleStringProperty name = new SimpleStringProperty();
+        private SimpleIntegerProperty age = new SimpleIntegerProperty();
+        private SimpleDoubleProperty score = new SimpleDoubleProperty();
 
-        public Student(String name, int age, double score) { // 构造函数
-            this.name = name;
-            this.age = age;
-            this.score = score;
+        public Student(String name, int age, double score) {
+            this.name.setValue(name);
+            this.age.setValue(age);
+            this.score.setValue(score);
         }
 
         // 自动创建Getter和Setter
         public String getName() {
-            return name;
+            return name.getValue();
         }
 
         public void setName(String name) {
-            this.name = name;
+            this.name.setValue(name);
         }
 
         public int getAge() {
-            return age;
+            return age.getValue();
         }
 
         public void setAge(int age) {
-            this.age = age;
+            this.age.setValue(age);
         }
 
         public double getScore() {
-            return score;
+            return score.getValue();
         }
 
         public void setScore(double score) {
-            this.score = score;
+            this.score.setValue(score);
         }
 
-        @Override // 重写toString，重点
-        public String toString() {
-            return name + "：" + age + "岁";
+        public SimpleStringProperty getNameProperty(){
+            return name;
+        }
+
+        @Override
+        public String toString() { // 需要添加.getValue()
+            return this.name.getValue() + "：" + this.age.getValue() + "岁";
         }
     }
 
