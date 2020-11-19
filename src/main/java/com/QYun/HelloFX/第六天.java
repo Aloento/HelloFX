@@ -7,13 +7,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class 第六天 extends Application { // 设置全局方法
@@ -45,7 +44,7 @@ public class 第六天 extends Application { // 设置全局方法
         AnchorPane.setTopAnchor(cbBox, 100.0);
 
         cbBox.setConverter(new StringConverter<>() { // 按回车以后数据就进这里
-            @Override
+            @Override // 它负责数据处理
             public String toString(Student object) {
                 if (object == null)
                     return null; // 解决报错
@@ -64,6 +63,27 @@ public class 第六天 extends Application { // 设置全局方法
                     return null;
 
                 return new Student(string, 10, 100);
+            }
+        });
+
+        cbBox.setCellFactory(new Callback<>() { // 设置下拉样式，重难点
+            @Override // 它负责样式处理
+            public ListCell<Student> call(ListView<Student> param) {
+
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(Student item, boolean empty) { // 匿名内部类
+                        super.updateItem(item, empty);
+                        if (!empty) {
+                            HBox hBox = new HBox(10);
+                            Label name = new Label(item.getName());
+                            Label age = new Label(item.getAge() + "岁");
+                            Label score = new Label(item.getScore() + "分");
+                            hBox.getChildren().addAll(name, age, score);
+                            this.setGraphic(hBox);
+                        }
+                    }
+                };
             }
         });
 
