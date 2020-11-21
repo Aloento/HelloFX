@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import java.time.LocalDate;
 
 public class 第七天 extends Application {
+    ScheduledService<Double> schedPbar;
 
     @Override
     public void start(Stage primaryStage) {
@@ -125,12 +126,46 @@ public class 第七天 extends Application {
         cron.setPeriod(Duration.millis(500));
         cron.start();
 
-        anchorPane.getChildren().addAll(cPicker, dPicker, pagination, slider);
+        // 不可拖动的进度条
+        ProgressBar pBar = new ProgressBar(0.4); // 0-1
+        pBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS); // 设置成未知进度
+        AnchorPane.setTopAnchor(pBar, 150.0);
+        // 圆形进度条实心
+        ProgressIndicator pIndicator = new ProgressIndicator();
+        AnchorPane.setTopAnchor(pIndicator, 200.0);
+
+        anchorPane.getChildren().addAll(cPicker, dPicker, pagination, slider, pBar, pIndicator);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第七天");
         primaryStage.setHeight(400);
         primaryStage.setWidth(400);
         primaryStage.show();
+
+        schedPbar = new ScheduledService<>() { // 更新进度条
+            double i = 0;
+            @Override
+            protected Task<Double> createTask() {
+                return new Task<>() {
+                    @Override
+                    protected Double call() {
+                        return i = i + 0.1;
+                    }
+
+                    @Override
+                    protected void updateValue(Double value) {
+//                        super.updateValue(value);
+                        pBar.setProgress(value);
+                        pIndicator.setProgress(value);
+                        if (value >= 1) // 需要大于等于1
+                            schedPbar.cancel();
+                    }
+                };
+            }
+        };
+
+        schedPbar.setDelay(Duration.millis(0));
+        schedPbar.setPeriod(Duration.millis(500));
+        schedPbar.start();
 
     }
     
