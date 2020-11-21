@@ -6,6 +6,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -134,7 +135,18 @@ public class 第七天 extends Application {
         ProgressIndicator pIndicator = new ProgressIndicator();
         AnchorPane.setTopAnchor(pIndicator, 200.0);
 
-        anchorPane.getChildren().addAll(cPicker, dPicker, pagination, slider, pBar, pIndicator);
+        Button B1 = new Button("B1");
+        Button B2 = new Button("B2");
+        SplitPane sp = new SplitPane(); // 分割面板
+        sp.setPrefWidth(200);
+        // 需要StackPane，给StackPane做大小限制就可以限制拖动范围
+        StackPane stack1 = new StackPane(B1);
+        StackPane stack2 = new StackPane(B2);
+        sp.getItems().addAll(stack1, stack2);
+        sp.setDividerPosition(0, 0.5); // 平均分，设置默认位置
+        AnchorPane.setTopAnchor(sp, 250.0);
+
+        anchorPane.getChildren().addAll(cPicker, dPicker, pagination, slider, pBar, pIndicator, sp);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第七天");
         primaryStage.setHeight(400);
