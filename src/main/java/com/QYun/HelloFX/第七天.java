@@ -158,7 +158,7 @@ class Cron extends ScheduledService<Integer>
 
             @Override
             protected void updateValue(Integer value) {
-//                super.updateValue(value);
+//                super.updateValue(value); // 这个语句与cron.valueProperty有关系
                 s.setValue(value);
             }
         };
