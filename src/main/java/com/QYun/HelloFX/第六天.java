@@ -87,6 +87,10 @@ public class 第六天 extends Application { // 设置全局方法
             }
         });
 
+        // 和ChoiceBox不同，ComboBox更改其内部选项内容后，只需要清除选择后再重新选择，就能刷新内容
+        // cbBox.getItems().get(index).setName(""); // 修改内容
+        // cbBox.getSelectionModel().clearAndSelect(index); // 清除后再选
+
         anchorPane.getChildren().addAll(tField, button_C, scBox, cbBox);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第五天");
