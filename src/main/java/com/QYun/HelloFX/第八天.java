@@ -50,6 +50,20 @@ public class 第八天 extends Application {
             }
         });
 
+        // 也可以这么实现，但是没有循环
+//        SpinnerValueFactory.ListSpinnerValueFactory<Student> slvf = new SpinnerValueFactory.ListSpinnerValueFactory<Student>(s_list);
+//        slvf.setConverter(new StringConverter<Student>() {
+//            @Override
+//            public String toString(Student object) {
+//                return object.toString();
+//            }
+//
+//            @Override
+//            public Student fromString(String string) {
+//                return null;
+//            }
+//        });
+
         aPane.getChildren().addAll(spinner, spinner1, spinner2);
         primaryStage.setScene(new Scene(aPane));
         primaryStage.setTitle("第八天");
@@ -65,7 +79,7 @@ public class 第八天 extends Application {
 
 }
 
-class SVF extends SpinnerValueFactory<Student> { // 设置按钮获取数据的方法
+class SVF extends SpinnerValueFactory<Student> { // 设置按钮获取数据的方法，带循环
     private int i = -1;
     private ObservableList<Student> list;
     public SVF(ObservableList<Student> list) {
