@@ -36,7 +36,7 @@ public class 第八天 extends Application {
         AnchorPane.setTopAnchor(spinner2, 100.0);
         SVF svf = new SVF(s_list);
         spinner2.setValueFactory(svf);
-        svf.setConverter(new StringConverter<Student>() { // 设置数据输出格式
+        svf.setConverter(new StringConverter<>() { // 设置数据输出格式
             @Override
             public String toString(Student object) {
                 if (object == null)
