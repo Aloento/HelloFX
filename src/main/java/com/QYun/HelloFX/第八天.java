@@ -63,6 +63,7 @@ public class 第八天 extends Application {
 //                return null;
 //            }
 //        });
+//        spinner2.setValueFactory(slvf);
 
         aPane.getChildren().addAll(spinner, spinner1, spinner2);
         primaryStage.setScene(new Scene(aPane));
