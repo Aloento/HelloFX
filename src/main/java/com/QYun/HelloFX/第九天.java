@@ -1,8 +1,6 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,12 +30,7 @@ public class 第九天 extends Application {
         sb.setUnitIncrement(10); // 设置按钮单次变化量
         sb.setBlockIncrement(10); // 设置滚动条点击变化量
         AnchorPane.setLeftAnchor(sb, 50.0);
-        sb.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                vBox.setLayoutY(-newValue.doubleValue());
-            }
-        });
+        sb.valueProperty().addListener((observable, oldValue, newValue) -> vBox.setLayoutY(-newValue.doubleValue()));
 
         HBox hBox = new HBox(5);
         for (int i = 0; i < 10; i++)
