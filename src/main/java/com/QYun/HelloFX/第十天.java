@@ -29,7 +29,7 @@ public class 第十天 extends Application {
         Student s3 = new Student("王老五", 20, 70);
 
         P_Student ps1 = new P_Student("小A", 22);
-        ps1.nameProperty().addListener(new ChangeListener<String>() {
+        ps1.nameProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 System.out.println("PN_Old: " + s + "\nPN_New: " + t1);
