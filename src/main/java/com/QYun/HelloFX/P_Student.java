@@ -9,12 +9,11 @@ public class P_Student {
     private int age;
 //    private double score;
 
-    private SimpleStringProperty P_name = null;
-    private SimpleIntegerProperty P_age = null;
-//    private SimpleDoubleProperty P_score = new SimpleDoubleProperty();
+    private SimpleStringProperty P_name;
+    private SimpleIntegerProperty P_age;
+//    private SimpleDoubleProperty P_score;
 
     public P_Student (String name, int age) {
-
         if (P_name == null)
             this.name = name;
         else this.P_name.set(name);
