@@ -114,4 +114,4 @@ public class 第十天 extends Application {
     }
 
 }
-
+//Written by Aloento.
