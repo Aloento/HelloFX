@@ -84,6 +84,10 @@ public class 第11天 extends Application {
         System.out.println("双向绑定：" + a.get() + " - " + b.get());
         a.unbindBidirectional(b); // 接触绑定顺序不重要
 
+        // 绑定判断
+        System.out.println(a.lessThan(b).get());
+        System.out.println(a.isEqualTo(y, 100)); // 后面那个数字是允许的误差
+
         launch(args);
     }
 
