@@ -1,6 +1,7 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleSetProperty;
@@ -75,7 +76,6 @@ public class 第十天 extends Application {
         SimpleSetProperty<String> ssp = new SimpleSetProperty<>(set);
 
         ssp.addListener((SetChangeListener<String>) change -> System.out.println(change.wasAdded()));
-
         ssp.add("D");
         ssp.forEach(System.out::println);
 
@@ -83,11 +83,29 @@ public class 第十天 extends Application {
         ObservableMap<String, String> map = FXCollections.observableHashMap();
         map.put("1", "A");
         map.put("2", "B");
+
         SimpleMapProperty<String, String> smp = new SimpleMapProperty<>(map);
-
         smp.addListener((MapChangeListener<String, String>) change -> System.out.println(change.wasAdded()));
-
         smp.forEach((s, s21) -> System.out.println(s + "-" + s21));
+
+        // 延迟监听（InvalidationListener）的用法，是为了优化执行效率而设计的
+        SimpleIntegerProperty sip = new SimpleIntegerProperty(1);
+        sip.addListener(observable -> System.out.println("延迟监听"));
+        // 无论设置多少次，只有get的时候才会触发监听，前提是没有调用ChangeListener
+        sip.set(2);
+        sip.get();
+        sip.set(3);
+        sip.set(4);
+        sip.get();
+
+        // 弱监听器，优化内存使用，防止溢出
+//        WeakChangeListener<Number> weak = new WeakChangeListener<>(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+//                System.out.println("弱监听");
+//            }
+//        });
+//        sip.addListener(weak);
 
     }
 
