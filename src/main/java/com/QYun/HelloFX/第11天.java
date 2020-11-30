@@ -19,20 +19,23 @@ public class 第11天 extends Application {
         Button b1 = new Button("按钮");
         TextField t1 = new TextField();
         TextField t2 = new TextField();
+        TextField t3 = new TextField();
 
         AnchorPane.setTopAnchor(t1, 50.0);
         AnchorPane.setTopAnchor(t2, 50.0);
+        AnchorPane.setTopAnchor(t3, 25.0);
         AnchorPane.setLeftAnchor(t2, 200.0);
 
-        anchorPane.getChildren().addAll(b1, t1, t2);
+        anchorPane.getChildren().addAll(b1, t1, t2, t3);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setTitle("第11天");
         primaryStage.setWidth(400);
         primaryStage.setHeight(400);
         primaryStage.show();
 
-        // 高效单向绑定，按钮随着AP变化而变化，且按钮不得自己变化
-        b1.prefWidthProperty().bind(anchorPane.widthProperty());
+        SimpleIntegerProperty w = new SimpleIntegerProperty(2);
+        // 高效单向绑定，按钮随着AP变化而变化，且按钮不得自己变化，（绑定计算Binding）
+        b1.prefWidthProperty().bind(anchorPane.widthProperty().divide(w));
 //      b1.translateXProperty().bind();
         // 双向绑定的文本输入框，还可以设置数据格式
         t1.textProperty().bindBidirectional(t2.textProperty(), new StringConverter<>() {
@@ -47,6 +50,13 @@ public class 第11天 extends Application {
                     return string.replace("你妈", "我妈");
                 return string;
             }
+        });
+
+        t3.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int width = Integer.parseInt(newValue);
+                w.set(width);
+            } catch (Exception ignored) {}
         });
 
     }
