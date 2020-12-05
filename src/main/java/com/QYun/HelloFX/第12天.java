@@ -1,25 +1,68 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class 第12天 extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Platform.exit();
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.setStyle("-fx-background-image: url('QA.jpg')");
+
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        SimpleListProperty<String> list = new SimpleListProperty<>(observableList);
+        list.addAll("A", "B");
+
+        TextField t1 = new TextField();
+        TextField t2 = new TextField();
+        HBox hBox = new HBox(5);
+        VBox vBox = new VBox(5);
+        VBox date = new VBox(5);
+
+        for (int i = 0; i < list.size(); i++) {
+            Label label = new Label();
+            label.textProperty().bind(list.valueAt(i));
+            date.getChildren().add(label);
+        }
+
+        hBox.getChildren().addAll(t1, t2);
+        vBox.getChildren().addAll(hBox, date);
+        anchorPane.getChildren().addAll(vBox);
+
+        primaryStage.setScene(new Scene(anchorPane));
+        primaryStage.setHeight(400);
+        primaryStage.setWidth(400);
+        primaryStage.setTitle("第12天");
+        primaryStage.show();
+
+        t2.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (t1.getText().equals("") || Integer.parseInt(t1.getText()) > list.size())
+                return;
+
+            try {
+                int i = Integer.parseInt(t1.getText());
+                list.set(i, t2.getText());
+            } catch (Exception ignored) {}
+        });
+
     }
 
     public static void main(String[] args) {
-
         // JavaFX的三元运算符
         SimpleIntegerProperty x = new SimpleIntegerProperty(1);
         SimpleIntegerProperty y = new SimpleIntegerProperty(2);
@@ -52,7 +95,7 @@ public class 第12天 extends Application {
         System.out.println("list1：" + list1.getValue() + "\t" + "list2：" + list2.getValue());
         System.out.println("ol1：" + ol1 + "\t" + "ol2：" + ol2 + "\n");
 
-        // set和map也是一样的
+        // set和map也是一样的，且set是无序的
         ObservableSet<String> obs1 = FXCollections.observableSet("A", "B");
         SimpleSetProperty<String> set1 = new SimpleSetProperty<>(obs1);
 
@@ -61,7 +104,7 @@ public class 第12天 extends Application {
 
         System.out.println("set1：" + set1.getValue() + "\t" + "set2：" + set2.getValue());
         set1.bind(set2);
-//      set1.bindContent(set2);
+        // set1.bindContent(set2);
         System.out.println("set1：" + set1.getValue() + "\t" + "set2：" + set2.getValue());
 
         set1.add("E");
@@ -74,6 +117,11 @@ public class 第12天 extends Application {
         SimpleMapProperty<String, String> map1 = new SimpleMapProperty<>(om1);
         map1.put("A", "1");
         map1.put("B", "2");
+
+        // valueAt方法
+        SimpleIntegerProperty index = new SimpleIntegerProperty(2); // 可以动态变化
+        ObjectBinding<String> objectBinding = list1.valueAt(index);
+        System.out.println(objectBinding.get()); // binding和list1中index的值绑定在一起
 
         launch(args);
     }
