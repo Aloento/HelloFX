@@ -1,6 +1,7 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.When;
@@ -122,6 +123,26 @@ public class 第12天 extends Application {
         SimpleIntegerProperty index = new SimpleIntegerProperty(2); // 可以动态变化
         ObjectBinding<String> objectBinding = list1.valueAt(index);
         System.out.println(objectBinding.get()); // binding和list1中index的值绑定在一起
+
+        // Bindings工具类
+        SimpleIntegerProperty value = new SimpleIntegerProperty(10);
+        System.out.println(Bindings.concat("value = ", value.asString("%s")).get());
+        System.out.println(Bindings.format("value = %s", value).get() + "\n");
+        // 和直接String不同，这样可以动态变化值
+        value.set(20);
+        System.out.println(Bindings.concat("value = ", value.asString("%s")).get());
+        System.out.println(Bindings.format("value = %s", value).get());
+        System.out.println(Bindings.max(x, y).intValue()); // 传回最大的那个数
+
+        // 创建自定义绑定，里面写绑定转换规则
+        System.out.println(Bindings.createStringBinding(() -> {
+            String value1 = "Hello";
+            if (x.greaterThan(y).get())
+                value1 = "true";
+            return value1;
+        }, x, y).get());
+
+
 
         launch(args);
     }
