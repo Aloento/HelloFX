@@ -139,13 +139,37 @@ public class 第12天 extends Application {
             return value1;
         }, x, y).get());
 
-        // 一个很复杂的绑定，要求引用的类是public，与最后一个参数绑定，自定义class中get方法名称必须为xxxProperty
+        // 一个很复杂的绑定，要求引用的类是public，与最后一个参数绑定，自定义class中get方法名称必须为 变量名Property
         // 类型 名称 = new 类型();
         // SimpleObjectProperty<类型> 对象 = new SimpleObjectProperty<类型>(名称);
-        // StringBinding select = Bindings.selectString(对象, "进入第一个类获取", "进第二个类获取");
+        // StringBinding select = Bindings.selectString(对象, "进入第一个类获取，变量名", "进第二个类获取");
         // System.out.println(select.get());
+
+        // 自定义绑定计算
+        SimpleIntegerProperty b = new SimpleIntegerProperty(30);
+        MyIntegerBinding my = new MyIntegerBinding(10);
+        System.out.println(my.get() + "\t" + b.get());
+        b.bind(my);
+        System.out.println(my.get() + "\t" + b.get());
 
         launch(args);
     }
 
 }
+
+class MyIntegerBinding extends IntegerBinding
+{ // 自定义绑定计算
+    private SimpleIntegerProperty a = new SimpleIntegerProperty();
+
+    public MyIntegerBinding(int value) {
+        this.bind(a);
+        a.set(value);
+    }
+
+    @Override
+    protected int computeValue() {
+        return a.get() * 2; // 自定义计算
+    }
+}
+
+//Written by Aloento.
