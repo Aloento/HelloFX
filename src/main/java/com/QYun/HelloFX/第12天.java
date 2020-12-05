@@ -1,10 +1,7 @@
 package com.QYun.HelloFX;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.binding.When;
+import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -142,7 +139,11 @@ public class 第12天 extends Application {
             return value1;
         }, x, y).get());
 
-
+        // 一个很复杂的绑定，要求引用的类是public，与最后一个参数绑定，自定义class中get方法名称必须为xxxProperty
+        // 类型 名称 = new 类型();
+        // SimpleObjectProperty<类型> 对象 = new SimpleObjectProperty<类型>(名称);
+        // StringBinding select = Bindings.selectString(对象, "进入第一个类获取", "进第二个类获取");
+        // System.out.println(select.get());
 
         launch(args);
     }
