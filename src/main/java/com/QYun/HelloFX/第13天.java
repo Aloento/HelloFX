@@ -9,10 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -33,8 +36,20 @@ public class 第13天 extends Application {
         Button b3 = new Button("打开");
         Button b4 = new Button("保存");
         Button b5 = new Button("文件夹");
+
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
+        Tooltip tooltip = new Tooltip("提示内容");
+        tooltip.setAnchorLocation(PopupWindow.AnchorLocation.CONTENT_BOTTOM_LEFT); // 设置弹出位置
+        b1.setTooltip(tooltip);
+        tooltip.setAutoHide(true);
+        // Tooltip.uninstall(b1, tooltip);
+        Tooltip.install(b2, tooltip);
+
+        HBox hBox = new HBox(5);
+        hBox.setPrefSize(30, 30);
+        hBox.setStyle("-fx-background-image: url('ubuntu.png')");
+        tooltip.setGraphic(hBox);
 
         VBox vBox = new VBox(5);
         vBox.getChildren().addAll(b1, b2, b3, b4, b5, textArea);
@@ -45,6 +60,7 @@ public class 第13天 extends Application {
         primaryStage.setWidth(400);
         primaryStage.setTitle("第13天");
         primaryStage.show();
+        tooltip.show(primaryStage);
 
         // 文件单选打开弹窗，获取文件路径
         b1.setOnAction(actionEvent -> {
@@ -104,6 +120,9 @@ public class 第13天 extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            // tooltip.setOnShown();
+            // tooltip.setOnHidden();
 
         });
         // 保存文件
