@@ -49,6 +49,7 @@ public class 第13天 extends Application {
         HBox hBox = new HBox(5);
         hBox.setPrefSize(30, 30);
         hBox.setStyle("-fx-background-image: url('ubuntu.png')");
+        tooltip.setStyle("-fx-background-color:#ffffff; -fx-text-fill: #000000");
         tooltip.setGraphic(hBox);
 
         VBox vBox = new VBox(5);
