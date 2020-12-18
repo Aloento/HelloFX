@@ -11,12 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public class 第13天 extends Application {
 
@@ -30,11 +32,12 @@ public class 第13天 extends Application {
         Button b2 = new Button("多选");
         Button b3 = new Button("打开");
         Button b4 = new Button("保存");
+        Button b5 = new Button("文件夹");
         TextArea textArea = new TextArea();
         textArea.setWrapText(true);
 
         VBox vBox = new VBox(5);
-        vBox.getChildren().addAll(b1, b2, b3, b4, textArea);
+        vBox.getChildren().addAll(b1, b2, b3, b4, b5, textArea);
 
         anchorPane.getChildren().addAll(vBox);
         primaryStage.setScene(new Scene(anchorPane));
@@ -103,7 +106,7 @@ public class 第13天 extends Application {
             }
 
         });
-
+        // 保存文件
         b4.setOnAction(actionEvent -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("保存文本");
@@ -130,6 +133,18 @@ public class 第13天 extends Application {
                 e.printStackTrace();
             }
 
+        });
+        // 选择文件夹
+        b5.setOnAction(actionEvent -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("选择文件夹");
+            directoryChooser.setInitialDirectory(new File("C:" + File.separator + "temp"));
+            File direc = directoryChooser.showDialog(new Stage());
+            if (direc == null) return;
+            System.out.println(direc.getAbsolutePath());
+            File[] files = direc.listFiles();
+            for (File f : Objects.requireNonNull(files))
+                System.out.println(f.getPath());
         });
 
     }
