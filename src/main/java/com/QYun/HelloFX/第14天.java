@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Objects;
 
 public class 第14天 extends Application {
 
@@ -29,14 +31,20 @@ public class 第14天 extends Application {
         // URL网络图片后台异步加载
         Image image3 = new Image("https://q-audio.org/images/LogoA.png", 100, 0, true, true, true);
         ImageView view3 = new ImageView(image3);
+        // 通过类加载器加载图片
+        URL url = getClass().getClassLoader().getResource("ubuntu.png");
+        Image image4 = new Image(Objects.requireNonNull(url).toExternalForm());
+        ImageView view4 = new ImageView(image4);
 
-        hBox.getChildren().addAll(view1, view2, view3);
+        hBox.getChildren().addAll(view1, view2, view3, view4);
         anchorPane.getChildren().addAll(hBox);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.setWidth(400);
         primaryStage.setHeight(400);
         primaryStage.setTitle("第14天");
         primaryStage.show();
+        // 显示加载进度
+        image3.progressProperty().addListener((observableValue, number, t1) -> System.out.println(t1.doubleValue()));
 
     }
 
