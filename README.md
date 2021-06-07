@@ -9,9 +9,11 @@
 ## JavaFX
 其次，这是一个简单的JavaFX项目  
 在Java11中被移除，交社区维护，改名叫OpenJFX  
-使用Java15，在JVM启动参数中添加  
-` --module-path "你的OpenJFX目录\javafx-sdk-15.0.1\lib" --add-modules javafx.controls,javafx.fxml `  
-即可正常启动程序
+
+使用Java17，在JVM启动参数中添加  
+` --module-path "你的OpenJFX目录\javafx-sdk-17\lib" --add-modules javafx.controls,javafx.fxml `  
+即可正常启动程序  
+或者使用Launcher（一个额外的启动类）来调用它以忽略启动时检查
 
 ## IDE
-我使用Visual Studio Code和Intellij  
+我使用Intellij IDEA
